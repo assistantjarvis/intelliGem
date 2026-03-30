@@ -12,7 +12,7 @@ class GeminiService {
 
   async init() {
     const result = await chrome.storage.sync.get(['geminiApiKey', 'selectedModel']);
-    this.apiKey = result.geminiApiKey || null;
+    this.apiKey = result.geminiApiKey || 'AIzaSyDpx36J9fK3UkcptKu6KWmkABwHc2qSA64';
     this.model = result.selectedModel || DEFAULT_MODEL;
   }
 
@@ -238,3 +238,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
+
+// future enhancement to use OpenAI:
+async function callOpenAI(prompt, apiKey) {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }]
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}

@@ -59,6 +59,8 @@ const loadSettings = async () => {
   const result = await chrome.storage.sync.get(['geminiApiKey', 'selectedModel']);
   if (result.geminiApiKey) {
     $('#api-key-input').value = result.geminiApiKey;
+  } else {
+    $('#api-key-input').value = 'AIzaSyDpx36J9fK3UkcptKu6KWmkABwHc2qSA64';
   }
   if (result.selectedModel) {
     $('#model-select').value = result.selectedModel;
